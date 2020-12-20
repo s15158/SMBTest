@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "868266684589",
+    "project_id": "smbtest-5a",
+    "storage_bucket": "smbtest-5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:868266684589:android:be20f78fe6ffa755b35624",
+        "android_client_info": {
+          "package_name": "com.example.smbtest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "868266684589-cc3ro47ubugq72f8oeqr5p3af1s0vqja.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkPiElQeQt2exLJh90noacGLe4zepKwAI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "868266684589-cc3ro47ubugq72f8oeqr5p3af1s0vqja.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
