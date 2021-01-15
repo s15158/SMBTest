@@ -69,7 +69,7 @@ class RecyclerAdapter(
                             if (checkData(
                                     editProductName.text.toString(),
                                     editProductPrice.text.toString().toFloatOrNull()
-                                ) && getProduct(editProductName.text.toString()).isSuccessful
+                                ) && !getProduct(editProductName.text.toString()).isSuccessful
                             ) {
                                 delProduct(mNameView?.text as String)
                                 db.collection(cp)
