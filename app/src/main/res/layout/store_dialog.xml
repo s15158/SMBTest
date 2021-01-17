@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <EditText
-        android:id="@+id/enterProductName"
+        android:id="@+id/enterStoreName"
         android:padding="10dp"
         android:layout_margin="4dp"
         android:hint="Name"
@@ -11,11 +11,20 @@
         android:layout_height="wrap_content"/>
 
     <EditText
-        android:id="@+id/enterProductPrice"
+        android:id="@+id/enterStoreDescription"
         android:padding="10dp"
         android:layout_margin="4dp"
-        android:hint="Price"
+        android:hint="Description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/enterStoreRadius"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal" />
+        android:layout_margin="4dp"
+        android:hint="Radius"
+        android:inputType="numberDecimal"
+        android:padding="10dp" />
+
 </LinearLayout>

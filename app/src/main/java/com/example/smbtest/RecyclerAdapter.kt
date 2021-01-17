@@ -20,9 +20,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 class RecyclerAdapter(
     private val database: FirebaseFirestore,
     private val collectionPath: String,
-    options: FirestoreRecyclerOptions<Product>
+    options: FirestoreRecyclerOptions<Store>
 ) :
-    FirestoreRecyclerAdapter<Product, RecyclerAdapter.ProductHolder>(options) {
+    FirestoreRecyclerAdapter<Store, RecyclerAdapter.ProductHolder>(options) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -38,12 +38,18 @@ class RecyclerAdapter(
         private val adapter: RecyclerAdapter,
     ) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var mNameView: TextView? = null
-        private var mPriceView: TextView? = null
-        private var product: Product? = null
+        private var mDescriptionView: TextView? = null
+        private var mRadiusView: TextView? = null
+        private var mLatitudeView: TextView? = null
+        private var mLongitudeView: TextView? = null
+        private var store: Store? = null
 
         init {
-            mNameView = itemView.findViewById(R.id.productName)
-            mPriceView = itemView.findViewById(R.id.productPrice)
+            mNameView = itemView.findViewById(R.id.storeName)
+            mDescriptionView = itemView.findViewById(R.id.storeDescription)
+            mRadiusView = itemView.findViewById(R.id.storeRadius)
+            mLatitudeView = itemView.findViewById(R.id.storeLatitude)
+            mLongitudeView = itemView.findViewById(R.id.storeLongitude)
             v.setOnClickListener(this)
         }
 
@@ -55,29 +61,33 @@ class RecyclerAdapter(
                     R.id.item_update -> {
                         val builder = AlertDialog.Builder(v.context)
                         val view: View = LayoutInflater.from(v.context)
-                            .inflate(R.layout.product_dialog, null, false)
+                            .inflate(R.layout.store_dialog, null, false)
                         builder.setTitle("Edit Item")
-                        val editProductName: EditText = view.findViewById(R.id.enterProductName)
-                        val editProductPrice: EditText = view.findViewById(R.id.enterProductPrice)
-                        editProductName.setText(mNameView?.text)
-                        editProductPrice.setText(mPriceView?.text)
+                        val editStoreName: EditText = view.findViewById(R.id.enterStoreName)
+                        val editStoreDescription: EditText = view.findViewById(R.id.enterStoreDescription)
+                        val editStoreRadius: EditText = view.findViewById(R.id.enterStoreRadius)
+                        editStoreName.setText(mNameView?.text)
+                        editStoreDescription.setText(mDescriptionView?.text)
+                        editStoreRadius.setText(mRadiusView?.text)
 
                         builder.setView(view)
                         builder.setPositiveButton(
                             "Edit"
                         ) { _, _ ->
                             if (checkData(
-                                    editProductName.text.toString(),
-                                    editProductPrice.text.toString().toFloatOrNull()
-                                ) && !getProduct(editProductName.text.toString()).isSuccessful
+                                    editStoreName.text.toString(),
+                                    editStoreDescription.text.toString(),
+                                    editStoreRadius.text.toString().toIntOrNull()
+                                ) && !getStore(editStoreName.text.toString()).isSuccessful
                             ) {
-                                delProduct(mNameView?.text as String)
+                                delStore(mNameView?.text as String)
                                 db.collection(cp)
-                                    .document(editProductName.text.toString())
+                                    .document(editStoreName.text.toString())
                                     .set(
                                         hashMapOf(
-                                            "name" to editProductName.text.toString(),
-                                            "price" to editProductPrice.text.toString().toFloat()
+                                            "name" to editStoreName.text.toString(),
+                                            "description" to editStoreDescription.text.toString(),
+                                            "radius" to editStoreRadius.text.toString().toInt()
                                         )
                                     )
                                     .addOnSuccessListener {
@@ -89,7 +99,7 @@ class RecyclerAdapter(
                                 adapter.notifyDataSetChanged()
                                 Toast.makeText(
                                     v.context,
-                                    "Product edited",
+                                    "Store edited",
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
@@ -116,7 +126,7 @@ class RecyclerAdapter(
                                 Log.w(TAG, "Error deleting document.", e)
                             }
                         adapter.notifyDataSetChanged()
-                        Toast.makeText(v.context, "Product deleted", Toast.LENGTH_SHORT)
+                        Toast.makeText(v.context, "Store deleted", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
@@ -126,11 +136,11 @@ class RecyclerAdapter(
             popupMenu.show()
         }
 
-        private fun getProduct(name: String): Task<DocumentSnapshot> {
+        private fun getStore(name: String): Task<DocumentSnapshot> {
             return db.collection(cp).document(name).get()
         }
 
-        private fun delProduct(name: String) {
+        private fun delStore(name: String) {
             db.collection(cp)
                 .document(name)
                 .delete()
@@ -142,14 +152,17 @@ class RecyclerAdapter(
                 }
         }
 
-        fun bindProduct(product: Product) {
-            this.product = product
-            mNameView?.text = product.name
-            mPriceView?.text = product.price.toString()
+        fun bindProduct(store: Store) {
+            this.store = store
+            mNameView?.text = store.name
+            mDescriptionView?.text = store.description
+            mRadiusView?.text = store.radius.toString()
+            mLatitudeView?.text = store.latitude.toString()
+            mLongitudeView?.text = store.longitude.toString()
         }
     }
 
-    override fun onBindViewHolder(holder: ProductHolder, position: Int, model: Product) {
+    override fun onBindViewHolder(holder: ProductHolder, position: Int, model: Store) {
         holder.bindProduct(model)
     }
 

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SMBTest</string>
+    <string name="channelID">GEO</string>
 </resources>
